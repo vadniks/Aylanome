@@ -12,6 +12,17 @@ class MainPagePresenter extends State<MainPage> {
       backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       title: const Text('Title'),
     ),
-    body: const Center(child: Column(children: [Text('Body')],),),
+    body: const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Center(child: Text('Body'))
+      ],
+    ),
+    floatingActionButton: FloatingActionButton(
+      tooltip: 'todo',
+      onPressed: () {  },
+      child: const Icon(Icons.add),
+    ),
   );
 }

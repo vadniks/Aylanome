@@ -14,9 +14,9 @@ class ScreenPresenter extends State<Screen> {
     debugShowCheckedModeBanner: false,
     theme: ThemeData.light(useMaterial3: true),
     darkTheme: ThemeData.dark(useMaterial3: true),
-    initialRoute: '/',
+    initialRoute: Consts.routeMain,
     routes: {
-      '/' : (context) => const MainPage()
+      Consts.routeMain : (context) => const MainPage()
     },
   );
 
