@@ -18,4 +18,6 @@ class ScreenPresenter extends State<Screen> {
       '/' : (context) => const MainPage()
     },
   );
+
+  static void init() => runApp(const Screen());
 }

@@ -1,5 +1,4 @@
 
-import 'package:flutter/material.dart';
-import 'package:aylanome/view/Screen.dart';
+import 'package:aylanome/model/Kernel.dart';
 
-void main() => runApp(const Screen());
+void main() => Kernel();
