@@ -7,7 +7,7 @@
 //#include <GL/glu.h>
 //#include <GL/glut.h>
 //#include <GL/glext.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 int main(void) {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) exit(1);
