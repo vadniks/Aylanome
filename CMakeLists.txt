@@ -12,4 +12,4 @@ add_compile_options("-O3")
 file(GLOB SOURCES CONFIGURE_DEPENDS src/*.c src/*.h)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} SDL2 GL)
+target_link_libraries(${PROJECT_NAME} SDL2 GL GLEW)
