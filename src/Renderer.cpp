@@ -212,6 +212,50 @@ void Renderer::drawHollowCircle(const glm::vec2& positionCenter, int radius, con
         drawPoints(count, vertices, 1.0f, color, GL_TRIANGLES);
 }
 
+void Renderer::drawFilledCircle(const glm::vec2& positionCenter, int radius, const glm::vec4& color) {
+    drawPoint(positionCenter, static_cast<float>(radius) * 2.0f * 0.7f, color);
+    drawHollowCircle(positionCenter, radius, color);
+}
+
+void Renderer::drawFilledTriangle(const glm::vec2& position, const glm::vec2& size, float rotationZ, const glm::vec4& color) {
+    mGl.glBindVertexArray(mVao);
+
+    const float vertices[] = {
+        -0.5f, -0.5f,
+        0.5f, -0.5f,
+        0.0f, 0.5f,
+    };
+
+    mGl.glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+    mGl.glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+
+    mGl.glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+    mGl.glEnableVertexAttribArray(0);
+
+    auto model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(position[0], position[1], 0.0f));
+
+    model = glm::translate(model, glm::vec3(0.5f * size[0], 0.5f * size[1], 0.0f));
+    model = glm::rotate(model, glm::radians(rotationZ), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::translate(model, glm::vec3(-0.5f * size[0], -0.5f * size[1], 0.0f));
+
+    model = glm::scale(model, glm::vec3(size[0], size[1], 1.0f));
+
+    mShapeShader->use();
+    mShapeShader->setValue(PROJECTION, mProjection);
+    mShapeShader->setValue(MODEL, model);
+    mShapeShader->setValue(COLOR, color);
+
+    mGl.glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    mGl.glBindBuffer(GL_ARRAY_BUFFER, 0);
+    mGl.glBindVertexArray(0);
+}
+
+void Renderer::drawHollowRectangle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) {
+
+}
+
 void Renderer::drawTexture(Texture& texture, const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color, bool isMono) {
     mGl.glBindVertexArray(mVao);
 
@@ -283,6 +327,10 @@ void Renderer::drawText(const QString& text, int size, const glm::vec2& position
 
         offset += advance >> 6;
     }
+}
+
+void Renderer::drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, int maxWidth) {
+
 }
 
 QSize Renderer::textMetrics(const QString& text, int size) {
