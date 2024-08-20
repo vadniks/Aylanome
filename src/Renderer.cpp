@@ -252,8 +252,11 @@ void Renderer::drawFilledTriangle(const glm::vec2& position, const glm::vec2& si
     mGl.glBindVertexArray(0);
 }
 
-void Renderer::drawHollowRectangle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) {
-
+void Renderer::drawHollowRectangle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float lineWidth) {
+    drawLine(position, glm::vec2(position.x + size.x, position.y), lineWidth, color);
+    drawLine(position, glm::vec2(position.x, position.y + size.y), lineWidth, color);
+    drawLine(glm::vec2(position.x + size.x, position.y), glm::vec2(position.x + size.x, position.y + size.y), lineWidth, color);
+    drawLine(glm::vec2(position.x, position.y + size.y), glm::vec2(position.x + size.x, position.y + size.y), lineWidth, color);
 }
 
 void Renderer::drawTexture(Texture& texture, const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color, bool isMono) {

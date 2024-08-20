@@ -32,7 +32,7 @@ public:
     void drawHollowCircle(const glm::vec2& positionCenter, int radius, const glm::vec4& color);
     void drawFilledCircle(const glm::vec2& positionCenter, int radius, const glm::vec4& color);
     void drawFilledTriangle(const glm::vec2& position, const glm::vec2& size, float rotationZ, const glm::vec4& color);
-    void drawHollowRectangle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
+    void drawHollowRectangle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float lineWidth);
     void drawTexture(Texture& texture, const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color, bool isMono = false);
     void drawText(const QString& text, int size, const glm::vec2& position, const glm::vec4& color);
     void drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, int maxWidth);
