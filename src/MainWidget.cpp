@@ -3,8 +3,6 @@
 #include <QKeyEvent>
 #include <glm/ext/matrix_clip_space.hpp>
 
-static QString test;
-
 MainWidget::MainWidget() : mRenderer(nullptr), mProjection() {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 }
@@ -33,10 +31,6 @@ void MainWidget::paintGL() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    mRenderer->drawHollowRectangle(glm::vec2(100.0f, 100.0f), glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
-    mRenderer->drawTextWrapped(test, 14, glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
-
-    mRenderer->drawFilledTriangle(glm::vec2(150.0f - 10.0f / 2.0f, 100.0f - 10.0f / 2.0f), glm::vec2(10.0f, 10.0f), 0.0f, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void MainWidget::resizeGL(int w, int h) {
@@ -44,11 +38,7 @@ void MainWidget::resizeGL(int w, int h) {
 }
 
 void MainWidget::keyPressEvent(QKeyEvent* event) {
-    if (event->key() != Qt::Key::Key_Backspace)
-        test = test + event->text();
-    else
-        test = test.mid(0, test.size() - 1);
-    update();
+
 }
 
 void MainWidget::mouseMoveEvent(QMouseEvent* event) {
