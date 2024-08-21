@@ -33,8 +33,10 @@ void MainWidget::paintGL() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    mRenderer->drawHollowRectangle(glm::vec2(10.0f, 10.0f), glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
-    mRenderer->drawTextWrapped(test, 14, glm::vec2(10.0f, 10.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
+    mRenderer->drawHollowRectangle(glm::vec2(100.0f, 100.0f), glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
+    mRenderer->drawTextWrapped(test, 14, glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
+
+    mRenderer->drawFilledTriangle(glm::vec2(150.0f - 10.0f / 2.0f, 100.0f - 10.0f / 2.0f), glm::vec2(10.0f, 10.0f), 0.0f, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 void MainWidget::resizeGL(int w, int h) {

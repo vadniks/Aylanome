@@ -7,8 +7,9 @@ static const char* const gShapeVertexShader = R"(
     #version 330 core
     layout (location = 0) in vec2 pos;
     uniform mat4 projection;
+    uniform mat4 model;
     void main() {
-        gl_Position = projection * vec4(pos, 0.0, 1.0);
+        gl_Position = projection * model * vec4(pos, 0.0, 1.0);
     }
 )";
 
@@ -106,6 +107,7 @@ void Renderer::drawPoint(const glm::vec2& position, float pointSize, const glm::
 
     mShapeShader->use();
     mShapeShader->setValue(PROJECTION, mProjection);
+    mShapeShader->setValue(MODEL, glm::mat4(1.0f));
     mShapeShader->setValue(COLOR, color);
 
     mGl.glPointSize(pointSize);
@@ -128,6 +130,7 @@ void Renderer::drawPoints(int count, const QVector<float>& vertices, float point
 
     mShapeShader->use();
     mShapeShader->setValue(PROJECTION, mProjection);
+    mShapeShader->setValue(MODEL, glm::mat4(1.0f));
     mShapeShader->setValue(COLOR, color);
 
     mGl.glPointSize(pointSize);
@@ -182,6 +185,7 @@ void Renderer::drawLine(const glm::vec2& positionStart, const glm::vec2& positio
 
     mShapeShader->use();
     mShapeShader->setValue(PROJECTION, mProjection);
+    mShapeShader->setValue(MODEL, glm::mat4(1.0f));
     mShapeShader->setValue(COLOR, color);
 
     mGl.glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, reinterpret_cast<void*>(0));
