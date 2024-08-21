@@ -332,8 +332,22 @@ void Renderer::drawText(const QString& text, int size, const glm::vec2& position
     }
 }
 
-void Renderer::drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, int maxWidth) {
+void Renderer::drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, QSize maxSize) {
+    const QSize totalSize = textMetrics(text, textSize);
 
+    QString line;
+    int linesCount = 0;
+
+    for (const QChar xChar : text) {
+        const int lineLength = textMetrics(line, textSize).width();
+
+        if (lineLength + textMetrics(xChar, textSize).width() > maxSize.width()) {
+            drawText(line, textSize, glm::vec2(position.x, position.y + static_cast<float>(linesCount * totalSize.height())), color);
+            line = QString();
+        }
+
+        line.append(xChar);
+    }
 }
 
 QSize Renderer::textMetrics(const QString& text, int size) {

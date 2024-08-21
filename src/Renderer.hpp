@@ -35,6 +35,6 @@ public:
     void drawHollowRectangle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float lineWidth);
     void drawTexture(Texture& texture, const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color, bool isMono = false);
     void drawText(const QString& text, int size, const glm::vec2& position, const glm::vec4& color);
-    void drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, int maxWidth);
+    void drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, QSize maxSize);
     QSize textMetrics(const QString& text, int size);
 };
