@@ -21,6 +21,9 @@ void MainWidget::initializeGL() {
     updateProjection();
 
     glEnable(GL_MULTISAMPLE);
+    glEnable(GL_BLEND);
+
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void MainWidget::paintGL() {
@@ -28,7 +31,7 @@ void MainWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     mRenderer->drawHollowRectangle(glm::vec2(10.0f, 10.0f), glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
-    mRenderer->drawTextWrapped("Hello World!", 10, glm::vec2(10.0f, 10.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
+    mRenderer->drawTextWrapped("Hello World!", 14, glm::vec2(10.0f, 10.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
 }
 
 void MainWidget::resizeGL(int w, int h) {
