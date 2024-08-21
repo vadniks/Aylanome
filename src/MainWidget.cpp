@@ -1,9 +1,12 @@
 
 #include "MainWidget.hpp"
+#include <QKeyEvent>
 #include <glm/ext/matrix_clip_space.hpp>
 
-MainWidget::MainWidget() : mRenderer(nullptr) {
+static QString test;
 
+MainWidget::MainWidget() : mRenderer(nullptr), mProjection() {
+    setFocusPolicy(Qt::FocusPolicy::ClickFocus);
 }
 
 MainWidget::~MainWidget() {
@@ -31,7 +34,7 @@ void MainWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     mRenderer->drawHollowRectangle(glm::vec2(10.0f, 10.0f), glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
-    mRenderer->drawTextWrapped("Hello World!", 14, glm::vec2(10.0f, 10.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
+    mRenderer->drawTextWrapped(test, 14, glm::vec2(10.0f, 10.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
 }
 
 void MainWidget::resizeGL(int w, int h) {
@@ -39,19 +42,23 @@ void MainWidget::resizeGL(int w, int h) {
 }
 
 void MainWidget::keyPressEvent(QKeyEvent* event) {
-    QWidget::keyPressEvent(event);
+    if (event->key() != Qt::Key::Key_Backspace)
+        test = test + event->text();
+    else
+        test = test.mid(0, test.size() - 1);
+    update();
 }
 
 void MainWidget::mouseMoveEvent(QMouseEvent* event) {
-    QWidget::mouseMoveEvent(event);
+
 }
 
 void MainWidget::mousePressEvent(QMouseEvent* event) {
-    QWidget::mousePressEvent(event);
+
 }
 
 void MainWidget::mouseReleaseEvent(QMouseEvent* event) {
-    QWidget::mouseReleaseEvent(event);
+
 }
 
 void MainWidget::updateProjection() {
