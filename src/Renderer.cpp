@@ -354,8 +354,10 @@ void Renderer::drawTextWrapped(const QString& text, int textSize, const glm::vec
     lines.append(line);
 
     int printedCount = 0;
-    for (const QString& xLine : lines)
+    for (const QString& xLine : lines) {
+        if ((printedCount + 1) * textSize > maxSize.height()) break;
         drawText(xLine, textSize, glm::vec2(position.x, position.y + static_cast<float>(printedCount++ * textSize)), color);
+    }
 }
 
 QSize Renderer::textMetrics(const QString& text, int size) {
