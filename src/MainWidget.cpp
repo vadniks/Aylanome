@@ -5,6 +5,7 @@
 
 MainWidget::MainWidget() : mRenderer(nullptr), mProjection() {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
+    setFixedSize(minimumSizeHint());
 }
 
 MainWidget::~MainWidget() {
