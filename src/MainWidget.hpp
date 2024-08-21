@@ -2,11 +2,15 @@
 #pragma once
 
 #include "defs.hpp"
+#include "Renderer.hpp"
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 
 class MainWidget final : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core {
     Q_OBJECT
+private:
+    Renderer* mRenderer;
+    glm::mat4 mProjection;
 public:
     MainWidget();
     ~MainWidget() override;

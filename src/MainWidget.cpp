@@ -1,12 +1,13 @@
 
 #include "MainWidget.hpp"
+#include <glm/ext/matrix_clip_space.hpp>
 
-MainWidget::MainWidget() {
+MainWidget::MainWidget() : mRenderer(nullptr) {
 
 }
 
 MainWidget::~MainWidget() {
-
+    delete mRenderer;
 }
 
 QSize MainWidget::minimumSizeHint() const {
@@ -16,16 +17,22 @@ QSize MainWidget::minimumSizeHint() const {
 void MainWidget::initializeGL() {
     QOpenGLFunctions_3_3_Core::initializeOpenGLFunctions();
 
+    mRenderer = new Renderer(*this);
+    updateProjection();
+
     glEnable(GL_MULTISAMPLE);
 }
 
 void MainWidget::paintGL() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    mRenderer->drawHollowRectangle(glm::vec2(10.0f, 10.0f), glm::vec2(100.0f, 100.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 1.0f);
+    mRenderer->drawTextWrapped("Hello World!", 10, glm::vec2(10.0f, 10.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), {100, 100});
 }
 
 void MainWidget::resizeGL(int w, int h) {
-    QOpenGLWidget::resizeGL(w, h);
+    updateProjection();
 }
 
 void MainWidget::keyPressEvent(QKeyEvent* event) {
@@ -45,5 +52,16 @@ void MainWidget::mouseReleaseEvent(QMouseEvent* event) {
 }
 
 void MainWidget::updateProjection() {
+    const auto xSize = size();
 
+    mProjection = glm::ortho(
+        0.0f,
+        static_cast<float>(xSize.width()),
+        static_cast<float>(xSize.height()),
+        0.0f,
+        -1.0f,
+        1.0f
+    );
+
+    mRenderer->setProjection(mProjection);
 }

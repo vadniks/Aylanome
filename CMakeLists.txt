@@ -23,4 +23,4 @@ find_package(Qt6 COMPONENTS Core Gui Widgets OpenGLWidgets OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} Qt::Core Qt::Gui Qt::Widgets Qt::OpenGL Qt::OpenGLWidgets freetype)
 include_directories(/usr/include/freetype2)
 
-#file(COPY res DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY res DESTINATION ${CMAKE_BINARY_DIR})

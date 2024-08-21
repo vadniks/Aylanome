@@ -257,6 +257,11 @@ void Renderer::drawHollowRectangle(const glm::vec2& position, const glm::vec2& s
     drawLine(position, glm::vec2(position.x, position.y + size.y), lineWidth, color);
     drawLine(glm::vec2(position.x + size.x, position.y), glm::vec2(position.x + size.x, position.y + size.y), lineWidth, color);
     drawLine(glm::vec2(position.x, position.y + size.y), glm::vec2(position.x + size.x, position.y + size.y), lineWidth, color);
+
+    drawPoint(position, lineWidth, color);
+    drawPoint(glm::vec2(position.x + size.x, position.y), lineWidth, color);
+    drawPoint(glm::vec2(position.x, position.y + size.y), lineWidth, color);
+    drawPoint(glm::vec2(position.x + size.x, position.y + size.y), lineWidth, color);
 }
 
 void Renderer::drawTexture(Texture& texture, const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color, bool isMono) {
@@ -335,19 +340,24 @@ void Renderer::drawText(const QString& text, int size, const glm::vec2& position
 void Renderer::drawTextWrapped(const QString& text, int textSize, const glm::vec2& position, const glm::vec4& color, QSize maxSize) {
     const QSize totalSize = textMetrics(text, textSize);
 
+    QList<QString> lines;
     QString line;
-    int linesCount = 0;
 
     for (const QChar xChar : text) {
         const int lineLength = textMetrics(line, textSize).width();
 
         if (lineLength + textMetrics(xChar, textSize).width() > maxSize.width()) {
-            drawText(line, textSize, glm::vec2(position.x, position.y + static_cast<float>(linesCount * totalSize.height())), color);
+            lines.append(line);
             line = QString();
         }
 
         line.append(xChar);
     }
+
+    lines.append(line);
+
+    for (const QString& xLine : lines)
+        drawText(xLine, textSize, glm::vec2(position.x, position.y + static_cast<float>(lines.size() * totalSize.height())), color);
 }
 
 QSize Renderer::textMetrics(const QString& text, int size) {
