@@ -13,7 +13,7 @@ MainWidget::~MainWidget() {
 }
 
 QSize MainWidget::minimumSizeHint() const {
-    return {16 * 115, 9 * 115};
+    return {16 * 110, 9 * 110};
 }
 
 void MainWidget::initializeGL() {
