@@ -1,22 +1,22 @@
 
-#include "MainWidget.hpp"
+#include "BoardWidget.hpp"
 #include <QKeyEvent>
 #include <glm/ext/matrix_clip_space.hpp>
 
-MainWidget::MainWidget() : mRenderer(nullptr), mProjection() {
+BoardWidget::BoardWidget() : mRenderer(nullptr), mProjection() {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setFixedSize(minimumSizeHint());
 }
 
-MainWidget::~MainWidget() {
+BoardWidget::~BoardWidget() {
     delete mRenderer;
 }
 
-QSize MainWidget::minimumSizeHint() const {
+QSize BoardWidget::minimumSizeHint() const {
     return {16 * 110, 9 * 110};
 }
 
-void MainWidget::initializeGL() {
+void BoardWidget::initializeGL() {
     QOpenGLFunctions_3_3_Core::initializeOpenGLFunctions();
 
     mRenderer = new Renderer(*this);
@@ -28,33 +28,33 @@ void MainWidget::initializeGL() {
     glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void MainWidget::paintGL() {
+void BoardWidget::paintGL() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
 }
 
-void MainWidget::resizeGL(int w, int h) {
+void BoardWidget::resizeGL(int w, int h) {
     updateProjection();
 }
 
-void MainWidget::keyPressEvent(QKeyEvent* event) {
+void BoardWidget::keyPressEvent(QKeyEvent* event) {
 
 }
 
-void MainWidget::mouseMoveEvent(QMouseEvent* event) {
+void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
 
 }
 
-void MainWidget::mousePressEvent(QMouseEvent* event) {
+void BoardWidget::mousePressEvent(QMouseEvent* event) {
 
 }
 
-void MainWidget::mouseReleaseEvent(QMouseEvent* event) {
+void BoardWidget::mouseReleaseEvent(QMouseEvent* event) {
 
 }
 
-void MainWidget::updateProjection() {
+void BoardWidget::updateProjection() {
     const auto xSize = size();
 
     mProjection = glm::ortho(

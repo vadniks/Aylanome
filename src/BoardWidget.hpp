@@ -6,17 +6,17 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 
-class MainWidget final : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core {
+class BoardWidget final : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core {
     Q_OBJECT
 private:
     Renderer* mRenderer;
     glm::mat4 mProjection;
 public:
-    MainWidget();
-    ~MainWidget() override;
+    BoardWidget();
+    ~BoardWidget() override;
 
-    DISABLE_COPY(MainWidget)
-    DISABLE_MOVE(MainWidget)
+    DISABLE_COPY(BoardWidget)
+    DISABLE_MOVE(BoardWidget)
 
     QSize minimumSizeHint() const override;
 protected:
