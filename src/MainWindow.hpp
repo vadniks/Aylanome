@@ -2,13 +2,13 @@
 #pragma once
 
 #include "defs.hpp"
-#include "BoardWidget.hpp"
+#include "MainWidget.hpp"
 #include <QMainWindow>
 
 class MainWindow final : public QMainWindow {
     Q_OBJECT
 private:
-    BoardWidget mMainWidget;
+    MainWidget mMainWidget;
 public:
     MainWindow();
 
