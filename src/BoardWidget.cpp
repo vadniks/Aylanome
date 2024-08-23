@@ -99,7 +99,7 @@ void BoardWidget::drawDescription() {
     const auto nodeSize = mRenderer->textMetrics(node, primaryFontSize);
     mRenderer->drawText(node, primaryFontSize, {
         (nodeTitleLine - margin) / 2 - nodeSize.width() / 2,
-        heightEnd - static_cast<float>(nodeSize.height() - margin)
+        heightEnd - nodeSize.height() - margin
     }, color);
 
     //
@@ -114,7 +114,7 @@ void BoardWidget::drawDescription() {
     const auto titleSize = mRenderer->textMetrics(title, primaryFontSize);
     mRenderer->drawText(title, primaryFontSize, {
         (titleNumberLine - margin + nodeTitleLine) / 2 - titleSize.width() / 2,
-        heightEnd - static_cast<float>(titleSize.height() - margin)
+        heightEnd - titleSize.height() - margin
     }, color);
 
     //
@@ -126,6 +126,6 @@ void BoardWidget::drawDescription() {
     const auto numberSize = mRenderer->textMetrics(number, secondaryFontSize);
     mRenderer->drawText(number, primaryFontSize, {
         (width() - margin + titleNumberLine) / 2 - numberSize.width() / 2,
-        heightEnd - static_cast<float>(numberSize.height() - margin * 2)
+        heightEnd - numberSize.height() - margin * 2
     }, color);
 }
