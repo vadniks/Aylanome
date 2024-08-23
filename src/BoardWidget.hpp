@@ -2,10 +2,12 @@
 #pragma once
 
 #include "defs.hpp"
+#include "elements.hpp"
 #include "Renderer.hpp"
 #include "DrawMode.hpp"
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
+#include <QStack>
 
 class BoardWidget final : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core {
     Q_OBJECT
@@ -13,6 +15,11 @@ private:
     Renderer* mRenderer;
     glm::mat4 mProjection;
     DrawMode mDrawMode;
+    QStack<Element*> mElements;
+    ProcessElement* mCurrentProcessElement; // nullable
+    StreamElement* mCurrentStreamElement; // nullable
+    ZipperElement* mCurrentZipperElement; // nullable
+    TextElement* mCurrentTextElement; // nullable
 public:
     BoardWidget();
     ~BoardWidget() override;

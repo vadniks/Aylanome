@@ -33,7 +33,7 @@ public:
     ~StreamElement() override = default;
 };
 
-class ZipperElement : public Element {
+class ZipperElement : public Element { // TODO: rename to Squiggle
 public:
     glm::ivec2 startPos;
     glm::ivec2 endPos;

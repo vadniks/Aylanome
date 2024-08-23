@@ -3,13 +3,30 @@
 #include <QKeyEvent>
 #include <glm/ext/matrix_clip_space.hpp>
 
-BoardWidget::BoardWidget() : mRenderer(nullptr), mProjection(), mDrawMode(DrawMode::SELECTOR) {
+BoardWidget::BoardWidget() :
+    mRenderer(nullptr),
+    mProjection(),
+    mDrawMode(DrawMode::SELECTOR),
+    mElements(),
+    mCurrentProcessElement(nullptr),
+    mCurrentStreamElement(nullptr),
+    mCurrentZipperElement(nullptr),
+    mCurrentTextElement(nullptr)
+{
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setFixedSize(minimumSizeHint());
 }
 
 BoardWidget::~BoardWidget() {
     delete mRenderer;
+
+    delete mCurrentProcessElement;
+    delete mCurrentStreamElement;
+    delete mCurrentZipperElement;
+    delete mCurrentTextElement;
+
+    for (auto i : mElements)
+        delete i;
 }
 
 QSize BoardWidget::minimumSizeHint() const {
@@ -34,6 +51,21 @@ void BoardWidget::paintGL() {
 
     drawBorder();
     drawDescription();
+
+    switch (mDrawMode) {
+        case DrawMode::PROCESS:
+            if (mCurrentProcessElement != nullptr) {
+                mRenderer->drawHollowRectangle(mCurrentProcessElement->position, mCurrentProcessElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f);
+            }
+            break;
+    }
+
+    for (Element* element : mElements) {
+        if (dynamic_cast<ProcessElement*>(element) != nullptr) {
+            auto processElement = dynamic_cast<ProcessElement*>(element);
+            mRenderer->drawHollowRectangle(processElement->position, processElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f);
+        }
+    }
 }
 
 void BoardWidget::resizeGL(int w, int h) {
@@ -49,11 +81,29 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void BoardWidget::mousePressEvent(QMouseEvent* event) {
+    const int x = event->pos().x();
+    const int y = event->pos().y();
 
+    switch (mDrawMode) {
+        case DrawMode::PROCESS:
+            mCurrentProcessElement = new ProcessElement();
+            mCurrentProcessElement->position = {x, y};
+            mCurrentProcessElement->size = {100, 100};
+            break;
+    }
+
+    update();
 }
 
 void BoardWidget::mouseReleaseEvent(QMouseEvent* event) {
+    switch (mDrawMode) {
+        case DrawMode::PROCESS:
+            mElements.push(mCurrentProcessElement);
+            mCurrentProcessElement = nullptr;
+            break;
+    }
 
+    update();
 }
 
 void BoardWidget::updateProjection() {
@@ -122,7 +172,7 @@ void BoardWidget::drawDescription() {
     const auto numberText = "Number:";
     mRenderer->drawText(numberText, secondaryFontSize, {titleNumberLine + margin, heightStart + margin}, color);
 
-    const auto number = "2"; // TODO: stub
+    const auto number = "1"; // TODO: stub
     const auto numberSize = mRenderer->textMetrics(number, secondaryFontSize);
     mRenderer->drawText(number, primaryFontSize, {
         (width() - margin + titleNumberLine) / 2 - numberSize.width() / 2,
@@ -131,5 +181,5 @@ void BoardWidget::drawDescription() {
 }
 
 void BoardWidget::drawModeChanged(DrawMode mode) {
-
+    mDrawMode = mode;
 }
