@@ -72,6 +72,8 @@ void BoardWidget::drawBorder() {
 }
 
 void BoardWidget::drawDescription() {
+    const auto primaryFontSize = 24, secondaryFontSize = 14;
+
     const glm::vec4 color = {0.0f, 0.0f, 0.0f, 1.0f};
 
     const auto margin = 5;
@@ -87,13 +89,13 @@ void BoardWidget::drawDescription() {
     mRenderer->drawLine({nodeTitleLine, heightStart}, {nodeTitleLine, heightEnd}, 1.0f, color);
 
     const auto nodeText = "Node:";
-    mRenderer->drawText(nodeText, 14, {margin * 2, heightStart + margin}, color);
+    mRenderer->drawText(nodeText, secondaryFontSize, {margin * 2, heightStart + margin}, color);
 
-    const auto nodeName = "A0"; // TODO: stub
-    const auto nodeNameSize = mRenderer->textMetrics(nodeName, 24);
-    mRenderer->drawText(nodeName, 24, {
-        (nodeTitleLine - margin) / 2 - nodeNameSize.width() / 2,
-        heightEnd - nodeNameSize.height() - margin
+    const auto node = "A0"; // TODO: stub
+    const auto nodeSize = mRenderer->textMetrics(node, primaryFontSize);
+    mRenderer->drawText(node, primaryFontSize, {
+        (nodeTitleLine - margin) / 2 - nodeSize.width() / 2,
+        heightEnd - nodeSize.height() - margin
     }, color);
 
     //
@@ -101,4 +103,25 @@ void BoardWidget::drawDescription() {
     const auto titleNumberLine = width() / 8 * 7;
     mRenderer->drawLine({titleNumberLine, heightStart}, {titleNumberLine, heightEnd}, 1.0f, color);
 
+    const auto titleText = "Title:";
+    mRenderer->drawText(titleText, secondaryFontSize, {nodeTitleLine + margin, heightStart + margin}, color);
+
+    const auto title = "Test"; // TODO: stub
+    const auto titleSize = mRenderer->textMetrics(title, primaryFontSize);
+    mRenderer->drawText(title, primaryFontSize, {
+        (titleNumberLine - margin + nodeTitleLine) / 2 - titleSize.width() / 2,
+        heightEnd - titleSize.height() - margin
+    }, color);
+
+    //
+
+    const auto numberText = "Number:";
+    mRenderer->drawText(numberText, secondaryFontSize, {titleNumberLine + margin, heightStart + margin}, color);
+
+    const auto number = "2"; // TODO: stub
+    const auto numberSize = mRenderer->textMetrics(number, secondaryFontSize);
+    mRenderer->drawText(number, primaryFontSize, {
+        (width() - margin + titleNumberLine) / 2 - numberSize.width() / 2,
+        heightEnd - numberSize.height() - margin * 2
+    }, color);
 }
