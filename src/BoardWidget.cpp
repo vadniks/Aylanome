@@ -13,7 +13,7 @@ BoardWidget::~BoardWidget() {
 }
 
 QSize BoardWidget::minimumSizeHint() const {
-    return {16 * 110, 9 * 110};
+    return {16 * 115, 9 * 115};
 }
 
 void BoardWidget::initializeGL() {
