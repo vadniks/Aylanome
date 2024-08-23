@@ -7,14 +7,18 @@ ControlsWidget::ControlsWidget() : mLayout(this) {
     mLayout.addWidget(&mSelectorModeButton);
 
     mProcessModeButton.setText("Process");
-    connect(&mSelectorModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::PROCESS); });
+    connect(&mProcessModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::PROCESS); });
     mLayout.addWidget(&mProcessModeButton);
 
     mStreamModeButton.setText("Stream");
-    connect(&mSelectorModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::STREAM); });
+    connect(&mStreamModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::STREAM); });
     mLayout.addWidget(&mStreamModeButton);
 
     mZipperModeButton.setText("Zipper");
-    connect(&mSelectorModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::ZIPPER); });
+    connect(&mZipperModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::ZIPPER); });
     mLayout.addWidget(&mZipperModeButton);
+
+    mTextModeButton.setText("Zipper");
+    connect(&mTextModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::TEXT); });
+    mLayout.addWidget(&mTextModeButton);
 }

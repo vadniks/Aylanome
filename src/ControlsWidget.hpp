@@ -14,6 +14,7 @@ private:
     QPushButton mProcessModeButton;
     QPushButton mStreamModeButton;
     QPushButton mZipperModeButton;
+    QPushButton mTextModeButton;
 public:
     ControlsWidget();
 signals:
