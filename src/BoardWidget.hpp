@@ -20,6 +20,7 @@ private:
     StreamElement* mCurrentStreamElement; // nullable
     SquiggleElement* mCurrentSquiggleElement; // nullable
     TextElement* mCurrentTextElement; // nullable
+    glm::ivec2 mMousePos;
 public:
     BoardWidget();
     ~BoardWidget() override;

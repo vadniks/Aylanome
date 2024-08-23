@@ -2,7 +2,7 @@
 #pragma once
 
 enum DrawMode {
-    SELECTOR,
+    SELECT,
     PROCESS,
     STREAM,
     SQUIGGLE,

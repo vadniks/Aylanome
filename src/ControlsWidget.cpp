@@ -2,8 +2,8 @@
 #include "ControlsWidget.hpp"
 
 ControlsWidget::ControlsWidget() : mLayout(this) {
-    mSelectorModeButton.setText("Selector");
-    connect(&mSelectorModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::SELECTOR); });
+    mSelectorModeButton.setText("Select");
+    connect(&mSelectorModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::SELECT); });
     mLayout.addWidget(&mSelectorModeButton);
 
     mProcessModeButton.setText("Process");
@@ -18,7 +18,7 @@ ControlsWidget::ControlsWidget() : mLayout(this) {
     connect(&mSquiggleModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::SQUIGGLE); });
     mLayout.addWidget(&mSquiggleModeButton);
 
-    mTextModeButton.setText("Zipper");
+    mTextModeButton.setText("Text");
     connect(&mTextModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::TEXT); });
     mLayout.addWidget(&mTextModeButton);
 }

@@ -6,15 +6,17 @@
 BoardWidget::BoardWidget() :
     mRenderer(nullptr),
     mProjection(),
-    mDrawMode(DrawMode::SELECTOR),
+    mDrawMode(DrawMode::SELECT),
     mElements(),
     mCurrentProcessElement(nullptr),
     mCurrentStreamElement(nullptr),
     mCurrentSquiggleElement(nullptr),
-    mCurrentTextElement(nullptr)
+    mCurrentTextElement(nullptr),
+    mMousePos()
 {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setFixedSize(minimumSizeHint());
+    setMouseTracking(true);
 }
 
 BoardWidget::~BoardWidget() {
@@ -52,18 +54,16 @@ void BoardWidget::paintGL() {
     drawBorder();
     drawDescription();
 
-    switch (mDrawMode) {
-        case DrawMode::PROCESS:
-            if (mCurrentProcessElement != nullptr) {
-                mRenderer->drawHollowRectangle(mCurrentProcessElement->position, mCurrentProcessElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f);
-            }
-            break;
-    }
-
     for (Element* element : mElements) {
         if (dynamic_cast<ProcessElement*>(element) != nullptr) {
-            auto processElement = dynamic_cast<ProcessElement*>(element);
-            mRenderer->drawHollowRectangle(processElement->position, processElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f);
+            const auto xElement = dynamic_cast<ProcessElement*>(element);
+
+            const bool selected =
+                mMousePos.x >= xElement->position.x && mMousePos.x <= xElement->position.x + xElement->size.x &&
+                mMousePos.y >= xElement->position.y && mMousePos.y <= xElement->position.y + xElement->size.y;
+
+            const auto widthAdjustment = selected ? 2 : 0;
+            mRenderer->drawHollowRectangle(xElement->position, xElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f + widthAdjustment);
         }
     }
 }
@@ -77,7 +77,13 @@ void BoardWidget::keyPressEvent(QKeyEvent* event) {
 }
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
+    switch (mDrawMode) {
+        case DrawMode::SELECT:
+            mMousePos = {event->pos().x(), event->pos().y()};
+            break;
+    }
 
+    update();
 }
 
 void BoardWidget::mousePressEvent(QMouseEvent* event) {
@@ -88,7 +94,7 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
         case DrawMode::PROCESS:
             mCurrentProcessElement = new ProcessElement();
             mCurrentProcessElement->position = {x, y};
-            mCurrentProcessElement->size = {100, 100};
+            mCurrentProcessElement->size = {16 * 10, 9 * 10};
             break;
     }
 

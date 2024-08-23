@@ -19,8 +19,9 @@ public:
     QString text;
     int textSize;
     glm::vec4 color;
+    int lineWidth;
 public:
-    ProcessElement() : position(), size(), text(), textSize(), color() {}
+    ProcessElement() : position(), size(), text(), textSize(), color(), lineWidth() {}
     ~ProcessElement() override = default;
 };
 
@@ -28,8 +29,9 @@ class StreamElement : public Element {
 public:
     QList<glm::ivec2> points;
     glm::vec4 color;
+    int lineWidth;
 public:
-    StreamElement() : points(), color() {}
+    StreamElement() : points(), color(), lineWidth() {}
     ~StreamElement() override = default;
 };
 
