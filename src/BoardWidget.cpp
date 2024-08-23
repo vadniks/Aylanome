@@ -3,7 +3,7 @@
 #include <QKeyEvent>
 #include <glm/ext/matrix_clip_space.hpp>
 
-BoardWidget::BoardWidget() : mRenderer(nullptr), mProjection() {
+BoardWidget::BoardWidget() : mRenderer(nullptr), mProjection(), mDrawMode(DrawMode::SELECTOR) {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setFixedSize(minimumSizeHint());
 }
@@ -128,4 +128,8 @@ void BoardWidget::drawDescription() {
         (width() - margin + titleNumberLine) / 2 - numberSize.width() / 2,
         heightEnd - numberSize.height() - margin * 2
     }, color);
+}
+
+void BoardWidget::drawModeChanged(DrawMode mode) {
+
 }

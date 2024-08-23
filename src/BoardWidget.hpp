@@ -3,6 +3,7 @@
 
 #include "defs.hpp"
 #include "Renderer.hpp"
+#include "DrawMode.hpp"
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_3_3_Core>
 
@@ -11,6 +12,7 @@ class BoardWidget final : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
 private:
     Renderer* mRenderer;
     glm::mat4 mProjection;
+    DrawMode mDrawMode;
 public:
     BoardWidget();
     ~BoardWidget() override;
@@ -31,4 +33,6 @@ private:
     void updateProjection();
     void drawBorder();
     void drawDescription();
+public slots:
+    void drawModeChanged(DrawMode mode);
 };

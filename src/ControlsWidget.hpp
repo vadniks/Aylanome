@@ -17,5 +17,5 @@ private:
 public:
     ControlsWidget();
 signals:
-    void modeChanged(DrawMode mode);
+    void drawModeChanged(DrawMode mode);
 };
