@@ -36,6 +36,10 @@ void BoardWidget::paintGL() {
     drawDescription();
 }
 
+void BoardWidget::resizeGL(int w, int h) {
+    updateProjection();
+}
+
 void BoardWidget::keyPressEvent(QKeyEvent* event) {
 
 }
