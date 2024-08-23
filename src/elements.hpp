@@ -33,15 +33,15 @@ public:
     ~StreamElement() override = default;
 };
 
-class ZipperElement : public Element { // TODO: rename to Squiggle
+class SquiggleElement : public Element {
 public:
     glm::ivec2 startPos;
     glm::ivec2 endPos;
     QString text;
     int textSize;
 public:
-    ZipperElement() : startPos(), endPos(), text(), textSize() {}
-    ~ZipperElement() override = default;
+    SquiggleElement() : startPos(), endPos(), text(), textSize() {}
+    ~SquiggleElement() override = default;
 };
 
 class TextElement : public Element {

@@ -10,7 +10,7 @@ BoardWidget::BoardWidget() :
     mElements(),
     mCurrentProcessElement(nullptr),
     mCurrentStreamElement(nullptr),
-    mCurrentZipperElement(nullptr),
+    mCurrentSquiggleElement(nullptr),
     mCurrentTextElement(nullptr)
 {
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
@@ -22,7 +22,7 @@ BoardWidget::~BoardWidget() {
 
     delete mCurrentProcessElement;
     delete mCurrentStreamElement;
-    delete mCurrentZipperElement;
+    delete mCurrentSquiggleElement;
     delete mCurrentTextElement;
 
     for (auto i : mElements)

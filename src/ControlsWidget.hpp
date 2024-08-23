@@ -13,7 +13,7 @@ private:
     QPushButton mSelectorModeButton;
     QPushButton mProcessModeButton;
     QPushButton mStreamModeButton;
-    QPushButton mZipperModeButton;
+    QPushButton mSquiggleModeButton;
     QPushButton mTextModeButton;
 public:
     ControlsWidget();

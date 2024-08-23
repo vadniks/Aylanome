@@ -18,7 +18,7 @@ private:
     QStack<Element*> mElements;
     ProcessElement* mCurrentProcessElement; // nullable
     StreamElement* mCurrentStreamElement; // nullable
-    ZipperElement* mCurrentZipperElement; // nullable
+    SquiggleElement* mCurrentSquiggleElement; // nullable
     TextElement* mCurrentTextElement; // nullable
 public:
     BoardWidget();

@@ -14,9 +14,9 @@ ControlsWidget::ControlsWidget() : mLayout(this) {
     connect(&mStreamModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::STREAM); });
     mLayout.addWidget(&mStreamModeButton);
 
-    mZipperModeButton.setText("Zipper");
-    connect(&mZipperModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::ZIPPER); });
-    mLayout.addWidget(&mZipperModeButton);
+    mSquiggleModeButton.setText("Squiggle");
+    connect(&mSquiggleModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::SQUIGGLE); });
+    mLayout.addWidget(&mSquiggleModeButton);
 
     mTextModeButton.setText("Zipper");
     connect(&mTextModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::TEXT); });

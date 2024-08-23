@@ -5,6 +5,6 @@ enum DrawMode {
     SELECTOR,
     PROCESS,
     STREAM,
-    ZIPPER,
+    SQUIGGLE,
     TEXT
 };
