@@ -58,7 +58,30 @@ void BoardWidget::paintEvent(QPaintEvent*) {
 }
 
 void BoardWidget::keyPressEvent(QKeyEvent* event) {
+    if (mSelectedElement != nullptr) {
+        switch (mSelectedElement->type()) {
+            case Element::PROCESS:
+                auto xElement = dynamic_cast<ProcessElement*>(mSelectedElement);
 
+                switch (event->key()) {
+                    case Qt::Key::Key_Up:
+                        xElement->size.y -= 5;
+                        break;
+                    case Qt::Key::Key_Left:
+                        xElement->size.x -= 5;
+                        break;
+                    case Qt::Key::Key_Down:
+                        xElement->size.y += 5;
+                        break;
+                    case Qt::Key::Key_Right:
+                        xElement->size.x += 5;
+                        break;
+                }
+                break;
+        }
+    }
+
+    update();
 }
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
