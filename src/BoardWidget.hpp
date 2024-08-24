@@ -18,6 +18,7 @@ private:
     SquiggleElement* mCurrentSquiggleElement; // nullable
     TextElement* mCurrentTextElement; // nullable
     Element* mSelectedElement; // nullable
+    bool mMousePressed;
 public:
     BoardWidget();
     ~BoardWidget() override;

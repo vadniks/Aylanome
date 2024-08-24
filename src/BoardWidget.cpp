@@ -9,11 +9,11 @@ BoardWidget::BoardWidget() :
     mCurrentStreamElement(nullptr),
     mCurrentSquiggleElement(nullptr),
     mCurrentTextElement(nullptr),
-    mSelectedElement(nullptr)
+    mSelectedElement(nullptr),
+    mMousePressed(false)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
-
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setFixedSize(minimumSizeHint());
     setMouseTracking(true);
@@ -67,7 +67,7 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
 
     switch (mDrawMode) {
         case DrawMode::SELECT:
-            if (mSelectedElement != nullptr) {
+            if (mMousePressed && mSelectedElement != nullptr) {
                 switch (mSelectedElement->type()) {
                     case Element::PROCESS:
                         dynamic_cast<ProcessElement*>(mSelectedElement)->position = {x, y};
@@ -81,8 +81,12 @@ void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
 }
 
 void BoardWidget::mousePressEvent(QMouseEvent* event) {
+    mMousePressed = true;
+
     const int x = event->pos().x();
     const int y = event->pos().y();
+
+    bool selected = false;
 
     switch (mDrawMode) {
         case DrawMode::SELECT:
@@ -91,10 +95,15 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
                     auto xElement = dynamic_cast<ProcessElement*>(element);
 
                     if (x >= xElement->position.x && x <= xElement->position.x + xElement->size.x &&
-                        y >= xElement->position.y && y <= xElement->position.y + xElement->size.y)
+                        y >= xElement->position.y && y <= xElement->position.y + xElement->size.y) {
                         mSelectedElement = xElement;
+                        selected = true;
+                    }
                 }
             }
+
+            if (!selected)
+                mSelectedElement = nullptr;
             break;
         case DrawMode::PROCESS:
             mCurrentProcessElement = new ProcessElement();
@@ -107,9 +116,11 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
 }
 
 void BoardWidget::mouseReleaseEvent(QMouseEvent* event) {
+    mMousePressed = false;
+
     switch (mDrawMode) {
         case DrawMode::SELECT:
-            mSelectedElement = nullptr;
+
             break;
         case DrawMode::PROCESS:
             mElements.push(mCurrentProcessElement);
