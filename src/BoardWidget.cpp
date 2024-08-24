@@ -43,11 +43,11 @@ void BoardWidget::paintEvent(QPaintEvent*) {
 
     for (auto element : mElements) {
         if (dynamic_cast<ProcessElement*>(element) != nullptr) {
-            auto xElement = dynamic_cast<ProcessElement*>(element);
+            const auto xElement = dynamic_cast<ProcessElement*>(element);
 
             QRect rect = {xElement->position.x, xElement->position.y, xElement->size.x, xElement->size.y};
 
-            painter.setPen(QPen(QBrush(xElement->foreground), xElement->lineWidth));
+            painter.setPen(QPen(QBrush(xElement->foreground), xElement->lineWidth + (xElement->selected ? 5 : 0)));
             painter.setBrush(QBrush(xElement->background));
             painter.drawRect(rect);
 
@@ -76,15 +76,21 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
     const int y = event->pos().y();
 
     switch (mDrawMode) {
+        case DrawMode::SELECT:
+            for (auto element : mElements) {
+                if (dynamic_cast<ProcessElement*>(element) != nullptr) {
+                    auto xElement = dynamic_cast<ProcessElement*>(element);
+
+                    if (x >= xElement->position.x && x <= xElement->position.x + xElement->size.x &&
+                        y >= xElement->position.y && y <= xElement->position.y + xElement->size.y)
+                        xElement->selected = true;
+                }
+            }
+            break;
         case DrawMode::PROCESS:
             mCurrentProcessElement = new ProcessElement();
             mCurrentProcessElement->position = {x, y};
             mCurrentProcessElement->size = {16 * 10, 9 * 10};
-            mCurrentProcessElement->text = "Process";
-            mCurrentProcessElement->textSize = 12;
-            mCurrentProcessElement->foreground = QColor(0, 0, 0);
-            mCurrentProcessElement->background = QColor(255, 255, 255);
-            mCurrentProcessElement->lineWidth = 1;
             break;
     }
 
@@ -93,6 +99,10 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
 
 void BoardWidget::mouseReleaseEvent(QMouseEvent* event) {
     switch (mDrawMode) {
+        case DrawMode::SELECT:
+            for (auto element : mElements)
+                element->selected = false;
+            break;
         case DrawMode::PROCESS:
             mElements.push(mCurrentProcessElement);
             mCurrentProcessElement = nullptr;

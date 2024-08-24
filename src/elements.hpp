@@ -7,8 +7,10 @@
 #include <QColor>
 
 class Element {
+public:
+    bool selected;
 protected:
-    Element() = default;
+    Element() : selected(false) {}
 public:
     virtual ~Element() = default;
 };
@@ -23,7 +25,7 @@ public:
     QColor background;
     int lineWidth;
 public:
-    ProcessElement() : position(), size(), text(), textSize(), foreground(), background(), lineWidth() {}
+    ProcessElement() : position(), size(), text("Process"), textSize(12), foreground(0, 0, 0), background(255, 255, 255), lineWidth(1) {}
     ~ProcessElement() override = default;
 };
 
