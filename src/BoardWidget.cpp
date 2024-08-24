@@ -92,7 +92,8 @@ void BoardWidget::drawDescription(QPainter& painter) {
     painter.setPen(QPen(QBrush(QColor(0, 0, 0)), 1));
     painter.setBrush(QBrush(QColor(0, 0, 0)));
 
-    QFont primaryFont("Roboto", 24), secondaryFont("Roboto", 14);
+    QFont primaryFont("Roboto", 20), secondaryFont("Roboto", 12);
+    QFontMetrics primaryFontMetrics(primaryFont), secondaryFontMetrics(secondaryFont);
 
     const auto margin = 5;
     const auto widthStart = margin;
@@ -108,14 +109,13 @@ void BoardWidget::drawDescription(QPainter& painter) {
 
     const auto nodeText = "Node:";
     painter.setFont(secondaryFont);
-    painter.drawText(margin * 2, heightStart + margin, nodeText);
+    painter.drawText(margin * 2, heightStart + margin + secondaryFontMetrics.capHeight(), nodeText);
 
     const auto node = "A0"; // TODO: stub
-    const auto nodeSize = QFontMetrics(primaryFont).size(Qt::TextSingleLine, node);
     painter.setFont(primaryFont);
     painter.drawText(
-        (nodeTitleLine - margin) / 2 - nodeSize.width() / 2,
-        heightEnd - nodeSize.height() - margin,
+        (nodeTitleLine - margin) / 2 - primaryFontMetrics.horizontalAdvance(node) / 2,
+        heightEnd - margin,
         node
     );
 
@@ -126,14 +126,13 @@ void BoardWidget::drawDescription(QPainter& painter) {
 
     const auto titleText = "Title:";
     painter.setFont(secondaryFont);
-    painter.drawText(nodeTitleLine + margin, heightStart + margin, titleText);
+    painter.drawText(nodeTitleLine + margin, heightStart + margin + secondaryFontMetrics.capHeight(), titleText);
 
     const auto title = "Test"; // TODO: stub
-    const auto titleSize = QFontMetrics(primaryFont).size(Qt::TextSingleLine, title);
     painter.setFont(primaryFont);
     painter.drawText(
-        (titleNumberLine - margin + nodeTitleLine) / 2 - titleSize.width() / 2,
-        heightEnd - titleSize.height() - margin,
+        (titleNumberLine - margin + nodeTitleLine) / 2 - primaryFontMetrics.horizontalAdvance(title) / 2,
+        heightEnd - margin,
         title
     );
 
@@ -141,14 +140,13 @@ void BoardWidget::drawDescription(QPainter& painter) {
 
     const auto numberText = "Number:";
     painter.setFont(secondaryFont);
-    painter.drawText(titleNumberLine + margin, heightStart + margin, numberText);
+    painter.drawText(titleNumberLine + margin, heightStart + margin + secondaryFontMetrics.capHeight(), numberText);
 
     const auto number = "1"; // TODO: stub
-    const auto numberSize = QFontMetrics(primaryFont).size(Qt::TextSingleLine, number);
     painter.setFont(primaryFont);
     painter.drawText(
-        (width() - margin + titleNumberLine) / 2 - numberSize.width() / 2,
-        heightEnd - numberSize.height() - margin * 2,
+        (width() - margin + titleNumberLine) / 2 - primaryFontMetrics.horizontalAdvance(number) / 2,
+        heightEnd - margin * 2,
         number
     );
 }
