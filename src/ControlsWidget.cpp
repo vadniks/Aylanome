@@ -2,9 +2,9 @@
 #include "ControlsWidget.hpp"
 
 ControlsWidget::ControlsWidget() : mLayout(this) {
-    mSelectorModeButton.setText("Select");
-    connect(&mSelectorModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::SELECT); });
-    mLayout.addWidget(&mSelectorModeButton);
+    mSelectModeButton.setText("Select");
+    connect(&mSelectModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::SELECT); });
+    mLayout.addWidget(&mSelectModeButton);
 
     mProcessModeButton.setText("Process");
     connect(&mProcessModeButton, &QPushButton::clicked, this, [this](){ emit drawModeChanged(DrawMode::PROCESS); });

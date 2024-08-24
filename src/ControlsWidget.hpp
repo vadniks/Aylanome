@@ -10,7 +10,7 @@ class ControlsWidget : public QWidget {
     Q_OBJECT
 private:
     QHBoxLayout mLayout;
-    QPushButton mSelectorModeButton;
+    QPushButton mSelectModeButton;
     QPushButton mProcessModeButton;
     QPushButton mStreamModeButton;
     QPushButton mSquiggleModeButton;
