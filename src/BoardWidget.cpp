@@ -9,7 +9,7 @@ BoardWidget::BoardWidget() :
     mCurrentStreamElement(nullptr),
     mCurrentSquiggleElement(nullptr),
     mCurrentTextElement(nullptr),
-    mMousePos()
+    mSelectedElement(nullptr)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -47,7 +47,7 @@ void BoardWidget::paintEvent(QPaintEvent*) {
 
             QRect rect = {xElement->position.x, xElement->position.y, xElement->size.x, xElement->size.y};
 
-            painter.setPen(QPen(QBrush(xElement->foreground), xElement->lineWidth + (xElement->selected ? 5 : 0)));
+            painter.setPen(QPen(QBrush(xElement->foreground), xElement->lineWidth + (mSelectedElement == xElement ? 5 : 0)));
             painter.setBrush(QBrush(xElement->background));
             painter.drawRect(rect);
 
@@ -62,9 +62,18 @@ void BoardWidget::keyPressEvent(QKeyEvent* event) {
 }
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event) {
+    const int x = event->pos().x();
+    const int y = event->pos().y();
+
     switch (mDrawMode) {
         case DrawMode::SELECT:
-            mMousePos = {event->pos().x(), event->pos().y()};
+            if (mSelectedElement != nullptr) {
+                switch (mSelectedElement->type()) {
+                    case Element::PROCESS:
+                        dynamic_cast<ProcessElement*>(mSelectedElement)->position = {x, y};
+                        break;
+                }
+            }
             break;
     }
 
@@ -83,7 +92,7 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
 
                     if (x >= xElement->position.x && x <= xElement->position.x + xElement->size.x &&
                         y >= xElement->position.y && y <= xElement->position.y + xElement->size.y)
-                        xElement->selected = true;
+                        mSelectedElement = xElement;
                 }
             }
             break;
@@ -100,8 +109,7 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
 void BoardWidget::mouseReleaseEvent(QMouseEvent* event) {
     switch (mDrawMode) {
         case DrawMode::SELECT:
-            for (auto element : mElements)
-                element->selected = false;
+            mSelectedElement = nullptr;
             break;
         case DrawMode::PROCESS:
             mElements.push(mCurrentProcessElement);

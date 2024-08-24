@@ -17,7 +17,7 @@ private:
     StreamElement* mCurrentStreamElement; // nullable
     SquiggleElement* mCurrentSquiggleElement; // nullable
     TextElement* mCurrentTextElement; // nullable
-    Vec2 mMousePos;
+    Element* mSelectedElement; // nullable
 public:
     BoardWidget();
     ~BoardWidget() override;

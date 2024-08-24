@@ -8,11 +8,14 @@
 
 class Element {
 public:
-    bool selected;
+    enum Type {PROCESS, STREAM, SQUIGGLE, TEXT};
+private:
+    Type mType;
 protected:
-    Element() : selected(false) {}
+    explicit Element(Type type) : mType(type) {}
 public:
     virtual ~Element() = default;
+    Type type() { return mType; }
 };
 
 class ProcessElement : public Element {
@@ -25,7 +28,7 @@ public:
     QColor background;
     int lineWidth;
 public:
-    ProcessElement() : position(), size(), text("Process"), textSize(12), foreground(0, 0, 0), background(255, 255, 255), lineWidth(1) {}
+    ProcessElement() : Element(Type::PROCESS), position(), size(), text("Process"), textSize(12), foreground(0, 0, 0), background(255, 255, 255), lineWidth(1) {}
     ~ProcessElement() override = default;
 };
 
@@ -35,7 +38,7 @@ public:
     QColor color;
     int lineWidth;
 public:
-    StreamElement() : points(), color(), lineWidth() {}
+    StreamElement() : Element(Type::STREAM), points(), color(), lineWidth() {}
     ~StreamElement() override = default;
 };
 
@@ -47,7 +50,7 @@ public:
     int textSize;
     QColor color;
 public:
-    SquiggleElement() : startPos(), endPos(), text(), textSize(), color() {}
+    SquiggleElement() : Element(Type::SQUIGGLE), startPos(), endPos(), text(), textSize(), color() {}
     ~SquiggleElement() override = default;
 };
 
@@ -58,6 +61,6 @@ public:
     int textSize;
     QColor color;
 public:
-    TextElement() : position(), text(), textSize(), color() {}
+    TextElement() : Element(Type::TEXT), position(), text(), textSize(), color() {}
     ~TextElement() override = default;
 };
