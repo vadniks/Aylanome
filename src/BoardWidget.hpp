@@ -3,24 +3,21 @@
 
 #include "defs.hpp"
 #include "elements.hpp"
-#include "Renderer.hpp"
 #include "DrawMode.hpp"
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions_3_3_Core>
+#include <QWidget>
+#include <QPainter>
 #include <QStack>
 
-class BoardWidget final : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core {
+class BoardWidget final : public QWidget {
     Q_OBJECT
 private:
-    Renderer* mRenderer;
-    glm::mat4 mProjection;
     DrawMode mDrawMode;
     QStack<Element*> mElements;
     ProcessElement* mCurrentProcessElement; // nullable
     StreamElement* mCurrentStreamElement; // nullable
     SquiggleElement* mCurrentSquiggleElement; // nullable
     TextElement* mCurrentTextElement; // nullable
-    glm::ivec2 mMousePos;
+    Vec2 mMousePos;
 public:
     BoardWidget();
     ~BoardWidget() override;
@@ -30,17 +27,14 @@ public:
 
     QSize minimumSizeHint() const override;
 protected:
-    void initializeGL() override;
-    void paintGL() override;
-    void resizeGL(int w, int h) override;
+    void paintEvent(QPaintEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
 private:
-    void updateProjection();
-    void drawBorder();
-    void drawDescription();
+    void drawBorder(QPainter& painter);
+    void drawDescription(QPainter& painter);
 public slots:
     void drawModeChanged(DrawMode mode);
 };

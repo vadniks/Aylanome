@@ -1,9 +1,10 @@
 
 #pragma once
 
+#include "vectors.hpp"
 #include <QString>
 #include <QList>
-#include <glm/glm.hpp>
+#include <QColor>
 
 class Element {
 protected:
@@ -14,11 +15,11 @@ public:
 
 class ProcessElement : public Element {
 public:
-    glm::ivec2 position;
-    glm::ivec2 size;
+    Vec2 position;
+    Vec2 size;
     QString text;
     int textSize;
-    glm::vec4 color;
+    QColor color;
     int lineWidth;
 public:
     ProcessElement() : position(), size(), text(), textSize(), color(), lineWidth() {}
@@ -27,8 +28,8 @@ public:
 
 class StreamElement : public Element {
 public:
-    QList<glm::ivec2> points;
-    glm::vec4 color;
+    QList<Vec2> points;
+    QColor color;
     int lineWidth;
 public:
     StreamElement() : points(), color(), lineWidth() {}
@@ -37,8 +38,8 @@ public:
 
 class SquiggleElement : public Element {
 public:
-    glm::ivec2 startPos;
-    glm::ivec2 endPos;
+    Vec2 startPos;
+    Vec2 endPos;
     QString text;
     int textSize;
 public:
@@ -48,7 +49,7 @@ public:
 
 class TextElement : public Element {
 public:
-    glm::ivec2 position;
+    Vec2 position;
     QString text;
     int textSize;
 public:

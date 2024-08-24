@@ -1,11 +1,8 @@
 
 #include "BoardWidget.hpp"
 #include <QKeyEvent>
-#include <glm/ext/matrix_clip_space.hpp>
 
 BoardWidget::BoardWidget() :
-    mRenderer(nullptr),
-    mProjection(),
     mDrawMode(DrawMode::SELECT),
     mElements(),
     mCurrentProcessElement(nullptr),
@@ -14,14 +11,15 @@ BoardWidget::BoardWidget() :
     mCurrentTextElement(nullptr),
     mMousePos()
 {
+    setBackgroundRole(QPalette::Base);
+    setAutoFillBackground(true);
+
     setFocusPolicy(Qt::FocusPolicy::ClickFocus);
     setFixedSize(minimumSizeHint());
     setMouseTracking(true);
 }
 
 BoardWidget::~BoardWidget() {
-    delete mRenderer;
-
     delete mCurrentProcessElement;
     delete mCurrentStreamElement;
     delete mCurrentSquiggleElement;
@@ -35,41 +33,13 @@ QSize BoardWidget::minimumSizeHint() const {
     return {16 * 115, 9 * 115};
 }
 
-void BoardWidget::initializeGL() {
-    QOpenGLFunctions_3_3_Core::initializeOpenGLFunctions();
+void BoardWidget::paintEvent(QPaintEvent* event) {
+    QPainter painter(this);
+    painter.setRenderHints(QPainter::RenderHint::Antialiasing | QPainter::RenderHint::TextAntialiasing);
+    painter.fillRect(QRect(0, 0, width(), height()), QBrush(QColor(255, 255, 255)));
 
-    mRenderer = new Renderer(*this);
-    updateProjection();
-
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_BLEND);
-
-    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void BoardWidget::paintGL() {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    drawBorder();
-    drawDescription();
-
-    for (Element* element : mElements) {
-        if (dynamic_cast<ProcessElement*>(element) != nullptr) {
-            const auto xElement = dynamic_cast<ProcessElement*>(element);
-
-            const bool hovered =
-                mMousePos.x >= xElement->position.x && mMousePos.x <= xElement->position.x + xElement->size.x &&
-                mMousePos.y >= xElement->position.y && mMousePos.y <= xElement->position.y + xElement->size.y;
-
-            const auto widthAdjustment = hovered ? 2 : 0;
-            mRenderer->drawHollowRectangle(xElement->position, xElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f + widthAdjustment);
-        }
-    }
-}
-
-void BoardWidget::resizeGL(int w, int h) {
-    updateProjection();
+    drawBorder(painter);
+    drawDescription(painter);
 }
 
 void BoardWidget::keyPressEvent(QKeyEvent* event) {
@@ -112,78 +82,75 @@ void BoardWidget::mouseReleaseEvent(QMouseEvent* event) {
     update();
 }
 
-void BoardWidget::updateProjection() {
-    const auto xSize = size();
-
-    mProjection = glm::ortho(
-        0.0f,
-        static_cast<float>(xSize.width()),
-        static_cast<float>(xSize.height()),
-        0.0f,
-        -1.0f,
-        1.0f
-    );
-
-    mRenderer->setProjection(mProjection);
+void BoardWidget::drawBorder(QPainter& painter) {
+    painter.setPen(QPen(QBrush(QColor(0, 0, 0)), 1));
+    painter.setBrush(QBrush(QColor(0, 0, 0, 0)));
+    painter.drawRect(5, 5, width() - 5 * 2, height() - 5 * 2);
 }
 
-void BoardWidget::drawBorder() {
-    mRenderer->drawHollowRectangle({5.0f, 5.0f}, {width() - 5 - 5, height() - 5 - 5}, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f);
-}
+void BoardWidget::drawDescription(QPainter& painter) {
+    painter.setPen(QPen(QBrush(QColor(0, 0, 0)), 1));
+    painter.setBrush(QBrush(QColor(0, 0, 0)));
 
-void BoardWidget::drawDescription() {
-    const auto primaryFontSize = 24, secondaryFontSize = 14;
-
-    const glm::vec4 color = {0.0f, 0.0f, 0.0f, 1.0f};
+    QFont primaryFont("Roboto", 24), secondaryFont("Roboto", 14);
 
     const auto margin = 5;
-    const auto widthStart = static_cast<float>(margin);
-    const auto heightStart = static_cast<float>(height() - margin * 2 - 50);
-    const auto heightEnd = static_cast<float>(height() - margin);
+    const auto widthStart = margin;
+    const auto heightStart = height() - margin * 2 - 50;
+    const auto heightEnd = height() - margin;
 
-    mRenderer->drawLine({widthStart, heightStart}, {width() - margin, heightStart}, 1.0f, color);
+    painter.drawLine(widthStart, heightStart, width() - margin, heightStart);
 
     //
 
     const auto nodeTitleLine = margin + width() / 8;
-    mRenderer->drawLine({nodeTitleLine, heightStart}, {nodeTitleLine, heightEnd}, 1.0f, color);
+    painter.drawLine(nodeTitleLine, heightStart, nodeTitleLine, heightEnd);
 
     const auto nodeText = "Node:";
-    mRenderer->drawText(nodeText, secondaryFontSize, {margin * 2, heightStart + margin}, color);
+    painter.setFont(secondaryFont);
+    painter.drawText(margin * 2, heightStart + margin, nodeText);
 
     const auto node = "A0"; // TODO: stub
-    const auto nodeSize = mRenderer->textMetrics(node, primaryFontSize);
-    mRenderer->drawText(node, primaryFontSize, {
+    const auto nodeSize = QFontMetrics(primaryFont).size(Qt::TextSingleLine, node);
+    painter.setFont(primaryFont);
+    painter.drawText(
         (nodeTitleLine - margin) / 2 - nodeSize.width() / 2,
-        heightEnd - nodeSize.height() - margin
-    }, color);
+        heightEnd - nodeSize.height() - margin,
+        node
+    );
 
     //
 
     const auto titleNumberLine = width() / 8 * 7;
-    mRenderer->drawLine({titleNumberLine, heightStart}, {titleNumberLine, heightEnd}, 1.0f, color);
+    painter.drawLine(titleNumberLine, heightStart, titleNumberLine, heightEnd);
 
     const auto titleText = "Title:";
-    mRenderer->drawText(titleText, secondaryFontSize, {nodeTitleLine + margin, heightStart + margin}, color);
+    painter.setFont(secondaryFont);
+    painter.drawText(nodeTitleLine + margin, heightStart + margin, titleText);
 
     const auto title = "Test"; // TODO: stub
-    const auto titleSize = mRenderer->textMetrics(title, primaryFontSize);
-    mRenderer->drawText(title, primaryFontSize, {
+    const auto titleSize = QFontMetrics(primaryFont).size(Qt::TextSingleLine, title);
+    painter.setFont(primaryFont);
+    painter.drawText(
         (titleNumberLine - margin + nodeTitleLine) / 2 - titleSize.width() / 2,
-        heightEnd - titleSize.height() - margin
-    }, color);
+        heightEnd - titleSize.height() - margin,
+        title
+    );
 
     //
 
     const auto numberText = "Number:";
-    mRenderer->drawText(numberText, secondaryFontSize, {titleNumberLine + margin, heightStart + margin}, color);
+    painter.setFont(secondaryFont);
+    painter.drawText(titleNumberLine + margin, heightStart + margin, numberText);
 
     const auto number = "1"; // TODO: stub
-    const auto numberSize = mRenderer->textMetrics(number, secondaryFontSize);
-    mRenderer->drawText(number, primaryFontSize, {
+    const auto numberSize = QFontMetrics(primaryFont).size(Qt::TextSingleLine, number);
+    painter.setFont(primaryFont);
+    painter.drawText(
         (width() - margin + titleNumberLine) / 2 - numberSize.width() / 2,
-        heightEnd - numberSize.height() - margin * 2
-    }, color);
+        heightEnd - numberSize.height() - margin * 2,
+        number
+    );
 }
 
 void BoardWidget::drawModeChanged(DrawMode mode) {
