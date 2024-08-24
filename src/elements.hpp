@@ -19,10 +19,11 @@ public:
     Vec2 size;
     QString text;
     int textSize;
-    QColor color;
+    QColor foreground;
+    QColor background;
     int lineWidth;
 public:
-    ProcessElement() : position(), size(), text(), textSize(), color(), lineWidth() {}
+    ProcessElement() : position(), size(), text(), textSize(), foreground(), background(), lineWidth() {}
     ~ProcessElement() override = default;
 };
 
@@ -42,8 +43,9 @@ public:
     Vec2 endPos;
     QString text;
     int textSize;
+    QColor color;
 public:
-    SquiggleElement() : startPos(), endPos(), text(), textSize() {}
+    SquiggleElement() : startPos(), endPos(), text(), textSize(), color() {}
     ~SquiggleElement() override = default;
 };
 
@@ -52,7 +54,8 @@ public:
     Vec2 position;
     QString text;
     int textSize;
+    QColor color;
 public:
-    TextElement() : position(), text(), textSize() {}
+    TextElement() : position(), text(), textSize(), color() {}
     ~TextElement() override = default;
 };

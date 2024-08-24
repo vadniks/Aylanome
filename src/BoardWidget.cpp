@@ -33,13 +33,28 @@ QSize BoardWidget::minimumSizeHint() const {
     return {16 * 115, 9 * 115};
 }
 
-void BoardWidget::paintEvent(QPaintEvent* event) {
+void BoardWidget::paintEvent(QPaintEvent*) {
     QPainter painter(this);
     painter.setRenderHints(QPainter::RenderHint::Antialiasing | QPainter::RenderHint::TextAntialiasing);
     painter.fillRect(QRect(0, 0, width(), height()), QBrush(QColor(255, 255, 255)));
 
     drawBorder(painter);
     drawDescription(painter);
+
+    for (auto element : mElements) {
+        if (dynamic_cast<ProcessElement*>(element) != nullptr) {
+            auto xElement = dynamic_cast<ProcessElement*>(element);
+
+            QRect rect = {xElement->position.x, xElement->position.y, xElement->size.x, xElement->size.y};
+
+            painter.setPen(QPen(QBrush(xElement->foreground), xElement->lineWidth));
+            painter.setBrush(QBrush(xElement->background));
+            painter.drawRect(rect);
+
+            painter.setFont(QFont("Roboto", xElement->textSize));
+            painter.drawText(rect, Qt::TextFlag::TextWordWrap | Qt::AlignmentFlag::AlignCenter, xElement->text);
+        }
+    }
 }
 
 void BoardWidget::keyPressEvent(QKeyEvent* event) {
@@ -65,6 +80,11 @@ void BoardWidget::mousePressEvent(QMouseEvent* event) {
             mCurrentProcessElement = new ProcessElement();
             mCurrentProcessElement->position = {x, y};
             mCurrentProcessElement->size = {16 * 10, 9 * 10};
+            mCurrentProcessElement->text = "Process";
+            mCurrentProcessElement->textSize = 12;
+            mCurrentProcessElement->foreground = QColor(0, 0, 0);
+            mCurrentProcessElement->background = QColor(255, 255, 255);
+            mCurrentProcessElement->lineWidth = 1;
             break;
     }
 
