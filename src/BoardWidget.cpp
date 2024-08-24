@@ -58,11 +58,11 @@ void BoardWidget::paintGL() {
         if (dynamic_cast<ProcessElement*>(element) != nullptr) {
             const auto xElement = dynamic_cast<ProcessElement*>(element);
 
-            const bool selected =
+            const bool hovered =
                 mMousePos.x >= xElement->position.x && mMousePos.x <= xElement->position.x + xElement->size.x &&
                 mMousePos.y >= xElement->position.y && mMousePos.y <= xElement->position.y + xElement->size.y;
 
-            const auto widthAdjustment = selected ? 2 : 0;
+            const auto widthAdjustment = hovered ? 2 : 0;
             mRenderer->drawHollowRectangle(xElement->position, xElement->size, {0.0f, 0.0f, 0.0f, 1.0f}, 1.0f + widthAdjustment);
         }
     }
